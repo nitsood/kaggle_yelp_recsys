@@ -14,7 +14,7 @@ cpick = defaultdict(set)
 centers = defaultdict(no_use2)
 
 def cluster_items(matrix1):
-  #f = open('sc_item_vectors_big9.pickle', 'rb')
+  f = open('data/yelp_training_set/cluster_centers.pickle', 'w')
   #inp = pickle.load(f)
   #reverse = defaultdict(int)
   #ctr = 0
@@ -27,21 +27,24 @@ def cluster_items(matrix1):
     #reverse[ctr] = i
   #  ctr += 1
   #f.close()
-  distmat = np.array([row for row in matrix1]).astype(np.float)
-  a = np.zeros(shape=(50, 50))
-  for i in xrange(0, 50):
-    empty = [0.0]*50
-    empty[i] = 1.0
-    a[i] = empty
-  k_means = cluster.KMeans(n_clusters=50, max_iter=10, init='k-means++', verbose=1)
+  #distmat = np.array([row for row in matrix1]).astype(np.float)
+  N = 50
+  #a = np.zeros(shape=(N, N))
+  #for i in xrange(0, 50):
+  #  empty = [0.0]*50
+  #  empty[i] = 1.0
+  #  a[i] = empty
+  k_means = cluster.KMeans(n_clusters=N, max_iter=50, init='k-means++', verbose=1)
   k_means.fit(matrix1)
   k_means_labels = k_means.labels_
   k_means_centers = k_means.cluster_centers_
-  print 'LABELS==='
-  print k_means_labels
-  print
+  #print 'LABELS==='
+  #print k_means_labels
+  #print
   print 'CENTERS==='
   print k_means_centers
+  pickle.dump(k_means_centers, f)
+  f.close()
   print
   print 'REPORT==='
   print k_means.inertia_
